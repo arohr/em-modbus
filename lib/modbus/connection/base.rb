@@ -7,8 +7,8 @@ module Modbus
     class Base < EM::Connection
 
 
-      def initialize(adapter)
-        @adapter = adapter
+      def initialize(handler)
+        @handler = handler
         @buffer  = String.new
       end
 

@@ -12,9 +12,9 @@ module Modbus
 
       # Initializes a new connection instance.
       #
-      # @param adapter [Roadster::Adapters::Base] The managing adapter object.
+      # @param handler The managing handler object.
       #
-      def initialize(adapter)
+      def initialize(handler)
         super
         @transaction_ident    = 0
         @pending_transactions = []
@@ -24,14 +24,14 @@ module Modbus
       # EM callback. Called when the TCP connection is sucessfully established.
       #
       def connection_completed
-        @adapter.connected self
+        @handler.connected self
       end
 
 
       # EM callback. Called when the TCP connection is closed.
       #
       def unbind
-        @adapter.disconnected
+        @handler.disconnected
       end
 
 

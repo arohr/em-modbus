@@ -14,21 +14,21 @@ module Modbus
   class PDU
 
     # Maps the Modbus function code to the corresponding class (for request messages)
-    req_PDUs = [
+    REQ_PDU_MAP = {}
+    [
       ReadInputRegistersRequest,
       ReadHoldingRegistersRequest,
       WriteMultipleRegistersRequest
-    ]
-    REQ_PDU_MAP = Hash[req_PDUs.map { |klass| [klass::FUNC_CODE, klass] }]
+    ].each { |klass| REQ_PDU_MAP[klass::FUNC_CODE] = klass }
 
 
     # Maps the Modbus function code to the corresponding class (for response messages)
-    rsp_PDUs = [
+    RSP_PDU_MAP = {}
+    [
       ReadInputRegistersResponse,
       ReadHoldingRegistersResponse,
       WriteMultipleRegistersResponse
-    ]
-    RSP_PDU_MAP = Hash[rsp_PDUs.map { |klass| [klass::FUNC_CODE, klass] }]
+    ].each { |klass| RSP_PDU_MAP[klass::FUNC_CODE] = klass }
 
 
     # Modbus exception codes

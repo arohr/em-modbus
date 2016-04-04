@@ -1,29 +1,25 @@
 # Copyright © 2016 Andy Rohr <andy.rohr@mindclue.ch>
 # All rights reserved.
 
+require 'forwardable'
+
 module Modbus
   module Connection
 
     class TCPServer < Base
+      extend Forwardable
+
+      def_delegator :@handler, :read_registers,   :read_registers
+      def_delegator :@handler, :write_registers,  :write_registers
 
 
       def post_init
-        @adapter.client_connected signature
+        @handler.client_connected signature
       end
 
 
       def unbind
-        @adapter.client_disconnected signature
-      end
-
-
-      def read_registers(start_addr, reg_count)
-        @adapter.read_registers start_addr, reg_count
-      end
-
-
-      def write_registers(start_addr, reg_values)
-        @adapter.write_registers start_addr, reg_values
+        @handler.client_disconnected signature
       end
 
 

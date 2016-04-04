@@ -30,7 +30,8 @@ module Modbus
     #
     def shift_word
       return nil if size < 2
-      self.shift(2).pack('C2').unpack('n').first
+      # self.shift(2).pack('C2').unpack('n').first
+      self.slice!(0,2).pack('C2').unpack('n').first
     end
 
 
@@ -48,7 +49,8 @@ module Modbus
     # @return [Integer] The shifted byte.
     #
     def shift_byte
-      self.shift
+      # self.shift
+      self.slice!(0,1).first
     end
 
 
