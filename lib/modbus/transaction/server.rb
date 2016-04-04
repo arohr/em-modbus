@@ -11,13 +11,13 @@ module Modbus
       # Try to decode a response ADU from some recevied bytes and handle the ADU if decoding was successful.
       #
       # @param buffer [String] The bytes received from the network.
-      # @param conn [Roadster::Adapters::Connections::ModbusTCPClientConnection] A EM connection object to work on.
+      # @param conn [Modbus::Connection::TCPServer] An EM connection object to work on.
       # @return [true, false] True, if there where enough bytes in the buffer and decoding was successful.
       #
       def self.recv_adu(buffer, conn)
         adu = Modbus::TCPADU.new
 
-        if adu.decode :request, buffer
+        if adu.decode :request, buffer, conn
           transaction = self.new conn
           transaction.handle_request adu
           return true
@@ -48,15 +48,15 @@ module Modbus
       def handle_request(adu)
         @request_adu = adu
 
-        transaction = TRANSACTIONS.find { |t| @request_adu.pdu.is_a? t[:request] }
-        fail "Unknown PDU #{adu.pdu.inspect}" unless transaction
-        # fail "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
+        transaction = TRANSACTIONS.find { |t| adu.pdu.is_a? t[:request] }
+        fail IllegalFunction,     "Unknown PDU #{adu.pdu.inspect}" unless transaction
+        fail ServerDeviceFailure, "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
 
         pdu = send transaction[:handler]
         send_pdu pdu
 
-      rescue => e
-        puts e.message
+      rescue ModbusError => error
+        send_pdu PDU::Exception.create(adu.pdu.func_code, error)
       end
 
 

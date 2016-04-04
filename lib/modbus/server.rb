@@ -91,8 +91,10 @@ module Modbus
       reg = @registers.fetch addr
       reg.value
 
+    rescue IndexError
+      raise IllegalDataAddress
     rescue => e
-      log.warn "read_register @ #{addr} failed. Error: #{e.message}, Line: #{e.backtrace.first}"
+      log.warn "read_register @ #{addr} failed. Error: #{e.message} (#{e.class}), Line: #{e.backtrace.first}"
     end
 
 
@@ -100,6 +102,8 @@ module Modbus
       reg = @registers.fetch addr
       reg.write value
 
+    rescue IndexError
+      raise IllegalDataAddress
     rescue => e
       log.warn "write_register @ #{addr} failed. Error: #{e.message}, Line: #{e.backtrace.first}"
     end

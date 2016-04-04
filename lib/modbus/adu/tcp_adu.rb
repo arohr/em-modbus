@@ -41,9 +41,10 @@ module Modbus
     #
     # @param type [Symbol] The type of PDU which should be created.
     # @param buffer [String] The bytes to decode.
+    # @param conn [Modbus::Connection::Base] An EM connection object to work on.
     # @return [true, false] True, if there where enough bytes in the buffer and decoding was successful.
     #
-    def decode(type, buffer)
+    def decode(type, buffer, conn)
       data = ProtocolData.new buffer
 
       # not enough data in buffer to know the length
@@ -56,24 +57,21 @@ module Modbus
       # not enough data in buffer according to length
       return false if data.size < length
 
+      # Strip the consumed bytes off the buffer, thus NOT consumed bytes remain in the buffer!
+      buffer.slice!(0..length + 6)
+
       @unit_ident = data.shift_byte
       func_code   = data.shift_byte
       @pdu        = PDU.create type, func_code, data
 
-      # Strip the consumed bytes off the buffer, thus NOT consumed bytes remain in the buffer!
-      buffer.slice!(0..self.length - 1)
-
       return true
-    end
 
+    rescue ModbusError => error
+      pdu = PDU::Exception.create func_code, error
+      adu = TCPADU.new pdu, @transaction_ident
+      conn.send_data adu.encode
 
-    # Returns the length of the remaining length of the ADU in bytes (= length of the ADU - 6 bytes)
-    # Used for the length field in the modbus protocol.
-    #
-    # @return [Integer] The length in bytes.
-    #
-    def length
-      @pdu.length + 7
+      return false
     end
 
 

@@ -29,7 +29,7 @@ module Modbus
 
       # Initializes a new Transaction instance.
       #
-      # @param conn [Roadster::Adapters::Connections::ModbusTCPClientConnection] A EM connection object to work on.
+      # @param conn [Modbus::Connection::TCPServer] An EM connection object to work on.
       #
       def initialize(conn)
         @conn = conn

@@ -16,7 +16,7 @@ module Modbus
       #
       # @param data [Modbus::ProtocolData] The protocol data to decode.
       #
-      def initialize(data = nil, is_exception = false)
+      def initialize(data = nil, func_code = nil)
         @start_addr = 0
         @reg_count  = 0
         super
@@ -38,8 +38,7 @@ module Modbus
       # @return [Modbus::ProtocolData] The protocol data representation of this object.
       #
       def encode
-        data = ProtocolData.new
-        data.push_byte func_code
+        data = super
         data.push_word @start_addr
         data.push_word @reg_count
         data
@@ -74,7 +73,7 @@ module Modbus
       #
       # @param data [Modbus::ProtocolData] The protocol data to decode.
       #
-      def initialize(data = nil, is_exception = false)
+      def initialize(data = nil, func_code = nil)
         @reg_values = []
         super
       end
@@ -95,8 +94,7 @@ module Modbus
       # @return [Modbus::ProtocolData] The protocol data representation of this object.
       #
       def encode
-        data = ProtocolData.new
-        data.push_byte func_code
+        data = super
         data.push_byte byte_count
         @reg_values.each { |value| data.push_word value }
         data

@@ -57,8 +57,8 @@ module Modbus
     end
 
 
-    def transaction
-      yield Modbus::Transaction::Client.new @conn
+    def transaction(timeout = 2)
+      yield Modbus::Transaction::Client.new @conn, timeout
     end
 
   end

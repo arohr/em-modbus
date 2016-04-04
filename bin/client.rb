@@ -1,5 +1,4 @@
-# Copyright © 2016 Andy Rohr <andy.rohr@mindclue.ch>
-# All rights reserved.
+#!/usr/bin/env ruby
 
 $LOAD_PATH << 'lib'
 require 'modbus'
@@ -9,7 +8,6 @@ class Client < Modbus::Client
   def poll
     transaction do |t|
       request = t.read_holding_registers 0, 10
-      request.timeout 2
 
       request.callback do |start_addr, reg_values|
         puts "reg values @ #{start_addr}: #{reg_values.inspect}"

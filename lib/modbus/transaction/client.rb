@@ -11,18 +11,24 @@ module Modbus
       include EM::Deferrable
 
 
+      def initialize(conn, timeout)
+        super conn
+        @timeout = timeout
+      end
+
+
       # Try to decode a response ADU from some recevied bytes and handle the ADU if decoding was successful.
       #
       # @param buffer [String] The bytes received from the network.
-      # @param conn [Roadster::Adapters::Connections::ModbusTCPClientConnection] A EM connection object to work on.
+      # @param conn [Modbus::Connection::TCPClient] An EM connection object to work on.
       # @return [true, false] True, if there where enough bytes in the buffer and decoding was successful.
       #
       def self.recv_adu(buffer, conn)
         adu = Modbus::TCPADU.new
 
-        if adu.decode :response, buffer
+        if adu.decode :response, buffer, conn
           transaction = conn.pick_pending_transaction adu.transaction_ident
-          fail InternalError, "Transaction ident #{adu.transaction_ident} not found!" unless transaction
+          raise ClientError, "Transaction ident #{adu.transaction_ident} not found!" unless transaction
           transaction.handle_response adu
           return true
         else
@@ -69,6 +75,12 @@ module Modbus
         @request_adu = TCPADU.new pdu, @conn.next_transaction_ident
         @conn.track_transaction self
         @conn.send_data @request_adu.encode
+
+        @timeout_timer = EM.add_timer @timeout do
+          @conn.pick_pending_transaction @request_adu.transaction_ident
+          set_deferred_failure "Timeout #{@timeout}s expired"
+        end
+
         self
       end
 
@@ -80,18 +92,18 @@ module Modbus
       #
       def handle_response(adu)
         @response_adu = adu
-        fail "Received modbus exception #{adu.pdu.exception_info} (code #{adu.pdu.exception_code}), request PDU: #{@request_adu.pdu.inspect}" if @response_adu.pdu.has_exception?
+        raise Modbus.find_exception(@response_adu.pdu.exception_code), "Request PDU: #{@request_adu.pdu.inspect}" if @response_adu.pdu.is_a? PDU::Exception
 
         transaction = TRANSACTIONS.find { |t| @response_adu.pdu.is_a? t[:response] }
-        fail "Unknown PDU #{adu.pdu.inspect}" unless transaction
-        fail "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
+        raise "Unknown PDU #{@response_adu.pdu.inspect}" unless transaction
+        raise "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
 
         value = send transaction[:handler]
+        EM.cancel_timer @timeout_timer
         set_deferred_success @request_adu.pdu.start_addr, value
 
       rescue => e
-        puts e.message
-        set_deferred_failure e.message
+        set_deferred_failure "#{e.class} - #{e.message}"
       end
 
 
@@ -119,7 +131,7 @@ module Modbus
       # @return [Float] Time time in seconds.
       #
       def transaction_time
-        fail ClientError, 'Response ADU unknown. Can not calcluate transaction time.' unless @response_adu
+        raise ClientError, 'Response ADU unknown. Can not calcluate transaction time.' unless @response_adu
         ((@response_adu.pdu.creation_time - @request_adu.pdu.creation_time) * 1000).round
       end
 

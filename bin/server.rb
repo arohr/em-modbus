@@ -1,5 +1,4 @@
-# Copyright © 2016 Andy Rohr <andy.rohr@mindclue.ch>
-# All rights reserved.
+#!/usr/bin/env ruby
 
 require 'logger'
 $LOAD_PATH << 'lib'
