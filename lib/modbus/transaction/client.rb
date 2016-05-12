@@ -37,6 +37,20 @@ module Modbus
       end
 
 
+      # Sends a request for the modbus function "read input status" asynchronusly. This method is non-blocking.
+      #
+      # @param start_addr [Integer] The starting modbus register address to read registers from.
+      # @param bit_count [Integer] The number of input bits to read.
+      #
+      def read_input_status(start_addr, bit_count)
+        pdu            = PDU::ReadInputStatusRequest.new
+        pdu.start_addr = start_addr
+        pdu.bit_count  = bit_count
+
+        send_pdu pdu
+      end
+
+
       # Sends a request for the modbus function "read holding registers" asynchronusly. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
@@ -104,6 +118,11 @@ module Modbus
 
       rescue => e
         set_deferred_failure "#{e.class} - #{e.message}"
+      end
+
+
+      def handle_read_input_status
+        @response_adu.pdu.bit_values
       end
 
 

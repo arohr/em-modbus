@@ -2,6 +2,7 @@
 # All rights reserved.
 
 require 'modbus/pdu/exception'
+require 'modbus/pdu/read_input_status'
 require 'modbus/pdu/read_registers'
 require 'modbus/pdu/read_input_registers'
 require 'modbus/pdu/read_holding_registers'
@@ -17,6 +18,7 @@ module Modbus
     # Maps the Modbus function code to the corresponding class (for request messages)
     REQ_PDU_MAP = {}
     [
+      ReadInputStatusRequest,
       ReadInputRegistersRequest,
       ReadHoldingRegistersRequest,
       WriteMultipleRegistersRequest
@@ -26,6 +28,7 @@ module Modbus
     # Maps the Modbus function code to the corresponding class (for response messages)
     RSP_PDU_MAP = {}
     [
+      ReadInputStatusResponse,
       ReadInputRegistersResponse,
       ReadHoldingRegistersResponse,
       WriteMultipleRegistersResponse

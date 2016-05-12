@@ -55,7 +55,7 @@ module Modbus
     end
   end
 
-  class ServceDeviceBusy < ModbusError
+  class ServerDeviceBusy < ModbusError
     CODE = 0x06
 
     def initialize(msg = 'SERVER DEVICE BUSY')
@@ -94,7 +94,7 @@ module Modbus
       IllegalDataValue,
       ServerDeviceFailure,
       Acknowledge,
-      ServceDeviceBusy,
+      ServerDeviceBusy,
       MemoryParityError,
       GatewayPathUnavailable,
       GatewayTargetDeviceFailedToRespond

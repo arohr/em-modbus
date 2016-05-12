@@ -17,13 +17,18 @@ module Modbus
 
 
     def add_register(addr, handler = nil)
+      log.info "Adding register @ #{addr}"
+
       reg_addr, bit = addr.split('.')
       reg_addr = reg_addr.to_i
+
       register_class = bit ? BitRegister : WordRegister
       reg = get_register reg_addr, register_class
       reg.handler = handler
+
       value = bit ? false : 0
       update_register addr, value
+
       reg
     end
 
@@ -58,7 +63,7 @@ module Modbus
 
     def read_registers(start_addr, reg_count)
       (0..reg_count-1).map do |idx|
-        addr = 40001 + start_addr + idx
+        addr = start_addr + idx
         read_register addr
       end
     end
@@ -66,7 +71,7 @@ module Modbus
 
     def write_registers(start_addr, reg_values)
       reg_values.each_with_index do |value, idx|
-        addr = 40001 + start_addr + idx
+        addr = start_addr + idx
         write_register addr, value
       end
 
@@ -92,6 +97,7 @@ module Modbus
       reg.value
 
     rescue IndexError
+      log.warn "read_register @ #{addr} failed (IllegalDataAddress)"
       raise IllegalDataAddress
     rescue => e
       log.warn "read_register @ #{addr} failed. Error: #{e.message} (#{e.class}), Line: #{e.backtrace.first}"
@@ -103,6 +109,7 @@ module Modbus
       reg.write value
 
     rescue IndexError
+      log.warn "write_register @ #{addr} failed (IllegalDataAddress)"
       raise IllegalDataAddress
     rescue => e
       log.warn "write_register @ #{addr} failed. Error: #{e.message}, Line: #{e.backtrace.first}"

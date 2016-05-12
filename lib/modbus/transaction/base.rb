@@ -7,25 +7,6 @@ module Modbus
 
     class Base
 
-      # Valid transactions (messages) and value handler config
-      TRANSACTIONS = [
-        {
-          :request  => PDU::ReadInputRegistersRequest,
-          :response => PDU::ReadInputRegistersResponse,
-          :handler  => :handle_read_input_registers
-        },
-        {
-          :request  => PDU::ReadHoldingRegistersRequest,
-          :response => PDU::ReadHoldingRegistersResponse,
-          :handler  => :handle_read_holding_registers
-        },
-        {
-          :request  => PDU::WriteMultipleRegistersRequest,
-          :response => PDU::WriteMultipleRegistersResponse,
-          :handler  => :handle_write_multiple_registers
-        }
-      ]
-
 
       # Initializes a new Transaction instance.
       #

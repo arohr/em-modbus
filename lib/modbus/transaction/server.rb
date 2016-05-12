@@ -61,17 +61,17 @@ module Modbus
 
 
       def handle_read_input_registers
-        read_registers PDU::ReadInputRegistersResponse
+        read_registers 30001, PDU::ReadInputRegistersResponse
       end
 
 
       def handle_read_holding_registers
-        read_registers PDU::ReadHoldingRegistersResponse
+        read_registers 40001, PDU::ReadHoldingRegistersResponse
       end
 
 
-      def read_registers(response_class)
-        reg_values     = @conn.read_registers @request_adu.pdu.start_addr, @request_adu.pdu.reg_count
+      def read_registers(offset, response_class)
+        reg_values     = @conn.read_registers offset + @request_adu.pdu.start_addr, @request_adu.pdu.reg_count
         pdu            = response_class.new
         pdu.reg_values = reg_values
         pdu
@@ -79,7 +79,7 @@ module Modbus
 
 
       def handle_write_multiple_registers
-        reg_count      = @conn.write_registers @request_adu.pdu.start_addr, @request_adu.pdu.reg_values
+        reg_count      = @conn.write_registers 40001 + @request_adu.pdu.start_addr, @request_adu.pdu.reg_values
         pdu            = PDU::WriteMultipleRegistersResponse.new
         pdu.start_addr = @request_adu.pdu.start_addr
         pdu.reg_count  = reg_count
