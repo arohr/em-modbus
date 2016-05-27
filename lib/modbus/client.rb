@@ -16,14 +16,12 @@ module Modbus
 
 
     def connected(conn)
-      puts 'connected'
       @conn = conn
       schedule_next_poll
     end
 
 
     def disconnected
-      puts 'disconnected'
       reconnect
     end
 
