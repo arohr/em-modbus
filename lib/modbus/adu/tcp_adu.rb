@@ -58,7 +58,7 @@ module Modbus
       return false if data.size < length
 
       # Strip the consumed bytes off the buffer, thus NOT consumed bytes remain in the buffer!
-      buffer.slice!(0..length + 6)
+      buffer.slice!(0..length + 5)
 
       @unit_ident = data.shift_byte
       func_code   = data.shift_byte
