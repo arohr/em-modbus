@@ -17,7 +17,7 @@ module Modbus
     def initialize(pdu = nil, transaction_ident = 0)
       @transaction_ident = transaction_ident
       @protocol_ident    = 0
-      @unit_ident        = 0x01 # TODO configurable?
+      @unit_ident        = 0xFF # TODO configurable?
       @pdu               = pdu
     end
 
