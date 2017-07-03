@@ -31,7 +31,7 @@ module Modbus
       # EM callback. Called when the TCP connection is closed.
       #
       def unbind
-        @handler.disconnected
+        @handler.disconnected self
       end
 
 

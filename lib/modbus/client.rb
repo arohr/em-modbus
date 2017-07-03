@@ -21,7 +21,7 @@ module Modbus
     end
 
 
-    def disconnected
+    def disconnected(conn)
       reconnect
     end
 
