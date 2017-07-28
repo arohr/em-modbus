@@ -9,13 +9,23 @@ module Modbus
 
       def initialize(handler)
         @handler = handler
-        @buffer  = String.new
+        reset_buffer
       end
 
 
       def receive_data(data)
         @buffer << data
         analyze_buffer
+
+      rescue => e
+        # TODO log exception
+        # puts e.message
+        reset_buffer
+      end
+
+
+      def reset_buffer
+        @buffer = String.new
       end
 
 
