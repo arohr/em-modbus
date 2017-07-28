@@ -28,7 +28,7 @@ module Modbus
 
         if adu.decode :response, buffer, conn
           transaction = conn.pick_pending_transaction adu.transaction_ident
-          raise ClientError, "Transaction ident #{adu.transaction_ident} not found!" unless transaction
+          fail ClientError, "Transaction ident #{adu.transaction_ident} not found!" unless transaction
           transaction.handle_response adu
           return true
         else
@@ -106,11 +106,11 @@ module Modbus
       #
       def handle_response(adu)
         @response_adu = adu
-        raise Modbus.find_exception(@response_adu.pdu.exception_code), "Request PDU: #{@request_adu.pdu.inspect}" if @response_adu.pdu.is_a? PDU::Exception
+        fail Modbus.find_exception(@response_adu.pdu.exception_code), "Request PDU: #{@request_adu.pdu.inspect}" if @response_adu.pdu.is_a? PDU::Exception
 
         transaction = TRANSACTIONS.find { |t| @response_adu.pdu.is_a? t[:response] }
-        raise "Unknown PDU #{@response_adu.pdu.inspect}" unless transaction
-        raise "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
+        fail "Unknown PDU #{@response_adu.pdu.inspect}" unless transaction
+        fail "Unexpected last sent PDU: #{@request_adu.pdu.inspect}" unless @request_adu.pdu.is_a? transaction[:request]
 
         value = send transaction[:handler]
         EM.cancel_timer @timeout_timer
@@ -150,7 +150,7 @@ module Modbus
       # @return [Float] Time time in seconds.
       #
       def transaction_time
-        raise ClientError, 'Response ADU unknown. Can not calcluate transaction time.' unless @response_adu
+        fail ClientError, 'Response ADU unknown. Can not calcluate transaction time.' unless @response_adu
         ((@response_adu.pdu.creation_time - @request_adu.pdu.creation_time) * 1000).round
       end
 

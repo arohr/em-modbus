@@ -98,7 +98,7 @@ module Modbus
 
     rescue IndexError
       log.warn "read_register @ #{addr} failed (IllegalDataAddress)"
-      raise IllegalDataAddress
+      fail IllegalDataAddress
     rescue => e
       log.warn "read_register @ #{addr} failed. Error: #{e.message} (#{e.class}), Line: #{e.backtrace.first}"
     end
@@ -110,7 +110,7 @@ module Modbus
 
     rescue IndexError
       log.warn "write_register @ #{addr} failed (IllegalDataAddress)"
-      raise IllegalDataAddress
+      fail IllegalDataAddress
     rescue => e
       log.warn "write_register @ #{addr} failed. Error: #{e.message}, Line: #{e.backtrace.first}"
     end
