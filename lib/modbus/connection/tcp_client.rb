@@ -16,6 +16,7 @@ module Modbus
       #
       def initialize(handler)
         super
+
         @transaction_ident    = 0
         @pending_transactions = []
       end
@@ -49,7 +50,8 @@ module Modbus
       # @param transaction [Modbus::Transaction] The transaction object to add.
       #
       def track_transaction(transaction)
-        puts "Too many pending pending transactions: #{@pending_transactions.size}" if @pending_transactions.size > 10
+        # TODO log "exception"
+        # puts "Too many pending pending transactions: #{@pending_transactions.size}" if @pending_transactions.size > 100
         @pending_transactions << transaction
       end
 
