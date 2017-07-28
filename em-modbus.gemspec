@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['andy.rohr@mindclue.ch']
   spec.summary       = %q{Modbus Client and Server for eventmachine.}
   spec.description   = %q{Ruby implementation of the Modbus protocol.}
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/arohr/em-modbus'
   spec.license       = 'MPLv2'
 
   spec.files         = `git ls-files`.split($/)
