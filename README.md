@@ -1,12 +1,13 @@
 # Modbus
 
-TODO: Write a gem description
+Modbus Client and Server for eventmachine.
+It's a pure Ruby implementation.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'modbus'
+    gem 'em-modbus'
 
 And then execute:
 
@@ -14,15 +15,15 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install modbus
+    $ gem install em-modbus
 
 ## Usage
 
-TODO: Write usage instructions here
+See examples.
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/modbus/fork )
+1. Fork it ( https://github.com/arohr/em-modbus/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
