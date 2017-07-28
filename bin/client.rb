@@ -7,8 +7,7 @@ class Client < Modbus::Client
 
   def poll
     transaction do |t|
-      # request = t.read_holding_registers 0, 10
-      request = t.read_input_status 0, 16
+      request = t.read_holding_registers 100, 1
 
       request.callback do |start_addr, reg_values|
         puts "reg values @ #{start_addr}: #{reg_values.inspect}"
@@ -29,6 +28,6 @@ trap 'INT' do
 end
 
 EM.run do
-  client = Client.new 'tcp://192.168.56.200:502'
+  client = Client.new 'tcp://localhost:1502'
   client.connect
 end
