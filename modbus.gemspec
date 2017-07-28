@@ -4,16 +4,15 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'modbus/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'modbus'
+  spec.name          = 'em-modbus'
   spec.version       = Modbus::VERSION
   spec.authors       = ['Andy Rohr']
   spec.email         = ['andy.rohr@mindclue.ch']
-  spec.summary       = %q{Modbus Client and Server.}
+  spec.summary       = %q{Modbus Client and Server for eventmachine.}
   spec.description   = %q{Ruby implementation of the Modbus protocol.}
   spec.homepage      = ''
   spec.license       = 'All rights reserved.'
 
-  # spec.files         = `git ls-files -z`.split('\x0')
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
