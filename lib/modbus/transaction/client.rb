@@ -37,7 +37,21 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function "read input status" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function 1 "read coils" asynchronusly. This method is non-blocking.
+      #
+      # @param start_addr [Integer] The starting modbus register address to read registers from.
+      # @param bit_count [Integer] The number of input bits to read.
+      #
+      def read_coils(start_addr, bit_count)
+        pdu            = PDU::ReadCoilsRequest.new
+        pdu.start_addr = start_addr
+        pdu.bit_count  = bit_count
+
+        send_pdu pdu
+      end
+
+
+      # Sends a request for the modbus function 2 "read input status" asynchronusly. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
       # @param bit_count [Integer] The number of input bits to read.
@@ -46,6 +60,34 @@ module Modbus
         pdu            = PDU::ReadInputStatusRequest.new
         pdu.start_addr = start_addr
         pdu.bit_count  = bit_count
+
+        send_pdu pdu
+      end
+
+
+      # Sends a request for the modbus function 5 "write single coil" asynchronusly. This method is non-blocking.
+      #
+      # @param start_addr [Integer] The address of the coil to write.
+      # @param value [Integer] The value to write.
+      #
+      def write_single_coil(start_addr, value)
+        pdu            = PDU::WriteSingleCoilRequest.new
+        pdu.start_addr = start_addr
+        pdu.value      = value
+
+        send_pdu pdu
+      end
+
+
+      # Sends a request for the modbus function 4 "read input registers" asynchronusly. This method is non-blocking.
+      #
+      # @param start_addr [Integer] The starting modbus register address to read registers from.
+      # @param reg_count [Integer] The number of registers to read.
+      #
+      def read_input_registers(start_addr, reg_count)
+        pdu            = PDU::ReadInputRegistersRequest.new
+        pdu.start_addr = start_addr
+        pdu.reg_count  = reg_count
 
         send_pdu pdu
       end
@@ -121,12 +163,17 @@ module Modbus
       end
 
 
-      def handle_read_input_status
+      def handle_read_bits
         @response_adu.pdu.bit_values
       end
 
 
-      def handle_read_holding_registers
+      def handle_write_single_coil
+        @response_adu.pdu.value
+      end
+
+
+      def handle_read_registers
         @response_adu.pdu.reg_values
       end
 

@@ -2,11 +2,14 @@
 # All rights reserved.
 
 require 'modbus/pdu/exception'
+require 'modbus/pdu/read_bits'
+require 'modbus/pdu/read_coils'
 require 'modbus/pdu/read_input_status'
 require 'modbus/pdu/read_registers'
 require 'modbus/pdu/read_input_registers'
 require 'modbus/pdu/read_holding_registers'
 require 'modbus/pdu/write_multiple_registers'
+require 'modbus/pdu/write_single_coil'
 
 module Modbus
 
@@ -18,20 +21,24 @@ module Modbus
     # Maps the Modbus function code to the corresponding class (for request messages)
     REQ_PDU_MAP = {}
     [
+      ReadCoilsRequest,
       ReadInputStatusRequest,
       ReadInputRegistersRequest,
       ReadHoldingRegistersRequest,
-      WriteMultipleRegistersRequest
+      WriteMultipleRegistersRequest,
+      WriteSingleCoilRequest
     ].each { |klass| REQ_PDU_MAP[klass::FUNC_CODE] = klass }
 
 
     # Maps the Modbus function code to the corresponding class (for response messages)
     RSP_PDU_MAP = {}
     [
+      ReadCoilsResponse,
       ReadInputStatusResponse,
       ReadInputRegistersResponse,
       ReadHoldingRegistersResponse,
-      WriteMultipleRegistersResponse
+      WriteMultipleRegistersResponse,
+      WriteSingleCoilResponse
     ].each { |klass| RSP_PDU_MAP[klass::FUNC_CODE] = klass }
 
 

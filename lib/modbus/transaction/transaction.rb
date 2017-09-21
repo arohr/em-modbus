@@ -11,24 +11,34 @@ module Modbus
     # Valid transactions (messages) and value handler config
     TRANSACTIONS = [
       {
+        :request  => PDU::ReadCoilsRequest,
+        :response => PDU::ReadCoilsResponse,
+        :handler  => :handle_read_bits
+      },
+      {
         :request  => PDU::ReadInputStatusRequest,
         :response => PDU::ReadInputStatusResponse,
-        :handler  => :handle_read_input_status
+        :handler  => :handle_read_bits
       },
       {
         :request  => PDU::ReadInputRegistersRequest,
         :response => PDU::ReadInputRegistersResponse,
-        :handler  => :handle_read_input_registers
+        :handler  => :handle_read_registers
       },
       {
         :request  => PDU::ReadHoldingRegistersRequest,
         :response => PDU::ReadHoldingRegistersResponse,
-        :handler  => :handle_read_holding_registers
+        :handler  => :handle_read_registers
       },
       {
         :request  => PDU::WriteMultipleRegistersRequest,
         :response => PDU::WriteMultipleRegistersResponse,
         :handler  => :handle_write_multiple_registers
+      },
+      {
+        :request  => PDU::WriteSingleCoilRequest,
+        :response => PDU::WriteSingleCoilResponse,
+        :handler  => :handle_write_single_coil
       }
     ]
 

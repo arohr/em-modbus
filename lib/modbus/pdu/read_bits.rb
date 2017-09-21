@@ -6,10 +6,10 @@ module Modbus
 
   class PDU
 
-    # Base class PDU for modbus register based functions (request message)
+    # Base class PDU for modbus bit based functions (request message)
     #
-    class ReadRegistersRequest < PDU
-      attr_accessor :start_addr, :reg_count
+    class ReadBitsRequest < PDU
+      attr_accessor :start_addr, :bit_count
 
 
       # Initializes a new PDU instance. Decodes from protocol data if given.
@@ -18,7 +18,7 @@ module Modbus
       #
       def initialize(data = nil, func_code = nil)
         @start_addr = 0
-        @reg_count  = 0
+        @bit_count  = 0
         super
       end
 
@@ -29,7 +29,7 @@ module Modbus
       #
       def decode(data)
         @start_addr = data.shift_word
-        @reg_count  = data.shift_word
+        @bit_count  = data.shift_word
       end
 
 
@@ -40,7 +40,7 @@ module Modbus
       def encode
         data = super
         data.push_word @start_addr
-        data.push_word @reg_count
+        data.push_word @bit_count
         data
       end
 
@@ -57,16 +57,16 @@ module Modbus
       # Validates the PDU. Raises exceptions if validation fails.
       #
       def validate
-        fail ClientError, "Register count must be in (1..127), got '#{@reg_count.inspect}'" unless (1..127).include?(@reg_count)
+        fail ClientError, "Register count must be in (1..127), got '#{@bit_count.inspect}'" unless (1..127).include?(@bit_count)
       end
 
     end
 
 
-    # Base class PDU for modbus register based functions (response message)
+    # Base class PDU for modbus bit based functions (response message)
     #
-    class ReadRegistersResponse < PDU
-      attr_accessor :reg_values
+    class ReadBitsResponse < PDU
+      attr_accessor :bit_values
 
 
       # Initializes a new PDU instance. Decodes from protocol data if given.
@@ -74,7 +74,7 @@ module Modbus
       # @param data [Modbus::ProtocolData] The protocol data to decode.
       #
       def initialize(data = nil, func_code = nil)
-        @reg_values = []
+        @bit_values = []
         super
       end
 
@@ -85,7 +85,13 @@ module Modbus
       #
       def decode(data)
         byte_count = data.shift_byte
-        byte_count.div(2).times { @reg_values.push data.shift_word }
+        byte_count.times do
+          byte = data.shift_byte
+
+          8.times do |bit|
+            @bit_values.push byte[bit] == 1
+          end
+        end
       end
 
 
@@ -96,7 +102,9 @@ module Modbus
       def encode
         data = super
         data.push_byte byte_count
-        @reg_values.each { |value| data.push_word value }
+        @bit_values.each do |value|
+          data.push_byte value
+        end
         data
       end
 
@@ -106,7 +114,7 @@ module Modbus
       # @return [Integer] The length.
       #
       def byte_count
-        @reg_values.size * 2
+        @bit_values.size
       end
 
 
