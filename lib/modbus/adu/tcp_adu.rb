@@ -13,11 +13,13 @@ module Modbus
     # Initializes a new TCPADU instance.
     #
     # @param pdu [Modbus::PDU] A PDU to preset in the ADU.
+    # @param transaction_ident [Integer] The transaction ID.
+    # @param unit_ident [Integer] The unit ID.
     #
-    def initialize(pdu = nil, transaction_ident = 0)
-      @transaction_ident = transaction_ident
+    def initialize(pdu = nil, transaction_ident = nil, unit_ident = nil)
+      @transaction_ident = transaction_ident || 0
       @protocol_ident    = 0
-      @unit_ident        = 0xFF # TODO configurable?
+      @unit_ident        = unit_ident || 0xFF
       @pdu               = pdu
     end
 
@@ -68,7 +70,7 @@ module Modbus
 
     rescue ModbusError => error
       pdu = PDU::Exception.create func_code, error
-      adu = TCPADU.new pdu, @transaction_ident
+      adu = TCPADU.new pdu, @transaction_ident, @unit_ident
       conn.send_data adu.encode
 
       return false

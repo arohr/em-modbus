@@ -11,9 +11,11 @@ module Modbus
       include EM::Deferrable
 
 
-      def initialize(conn, timeout)
+      def initialize(conn, timeout, unit_ident = nil)
         super conn
-        @timeout = timeout
+
+        @timeout    = timeout
+        @unit_ident = unit_ident
       end
 
 
@@ -128,7 +130,7 @@ module Modbus
       # @return [Modbus::TCPADU] The sent ADU.
       #
       def send_pdu(pdu)
-        @request_adu = TCPADU.new pdu, @conn.next_transaction_ident
+        @request_adu = TCPADU.new pdu, @conn.next_transaction_ident, @unit_ident
         @conn.track_transaction self
         @conn.send_data @request_adu.encode
 
