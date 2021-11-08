@@ -19,7 +19,7 @@ module Modbus
       end
 
 
-      # Try to decode a response ADU from some recevied bytes and handle the ADU if decoding was successful.
+      # Try to decode a response ADU from some received bytes and handle the ADU if decoding was successful.
       #
       # @param buffer [String] The bytes received from the network.
       # @param conn [Modbus::Connection::TCPClient] An EM connection object to work on.
@@ -39,7 +39,7 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function 1 "read coils" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function 1 "read coils" asynchronously. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
       # @param bit_count [Integer] The number of input bits to read.
@@ -53,7 +53,7 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function 2 "read input status" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function 2 "read input status" asynchronously. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
       # @param bit_count [Integer] The number of input bits to read.
@@ -67,7 +67,7 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function 5 "write single coil" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function 5 "write single coil" asynchronously. This method is non-blocking.
       #
       # @param start_addr [Integer] The address of the coil to write.
       # @param value [Integer] The value to write.
@@ -81,7 +81,7 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function 4 "read input registers" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function 4 "read input registers" asynchronously. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
       # @param reg_count [Integer] The number of registers to read.
@@ -95,7 +95,7 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function "read holding registers" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function "read holding registers" asynchronously. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
       # @param reg_count [Integer] The number of registers to read.
@@ -109,7 +109,7 @@ module Modbus
       end
 
 
-      # Sends a request for the modbus function "write mutliple registers" asynchronusly. This method is non-blocking.
+      # Sends a request for the modbus function "write mutliple registers" asynchronously. This method is non-blocking.
       #
       # @param start_addr [Integer] The starting modbus register address to read registers from.
       # @param reg_values [Integer] The register values to write.
@@ -123,7 +123,7 @@ module Modbus
       end
 
 
-      # Constructs a ADU using a PDU and send it asynchronusly to the server.
+      # Constructs a ADU using a PDU and send it asynchronously to the server.
       # The created ADU is stored internally and is matched to the response when the response is available.
       #
       # @param pdu [Modbus::PDU] The PDU to send.

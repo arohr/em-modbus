@@ -8,7 +8,7 @@ module Modbus
     class Server < Base
 
 
-      # Try to decode a response ADU from some recevied bytes and handle the ADU if decoding was successful.
+      # Try to decode a response ADU from some received bytes and handle the ADU if decoding was successful.
       #
       # @param buffer [String] The bytes received from the network.
       # @param conn [Modbus::Connection::TCPServer] An EM connection object to work on.
@@ -27,7 +27,7 @@ module Modbus
       end
 
 
-      # Constructs a ADU using a PDU and send it asynchronusly to the server.
+      # Constructs a ADU using a PDU and send it asynchronously ly to the server.
       # The created ADU is stored internally and is matched to the response when the response is available.
       #
       # @param pdu [Modbus::PDU] The PDU to send.
@@ -40,7 +40,7 @@ module Modbus
       end
 
 
-      # Handles a recevied ADU and calls the relevant callback.
+      # Handles a received ADU and calls the relevant callback.
       # The corresponding request ADU is matched and cleaned up.
       #
       # @param adu [Modbus::ADU] The ADU to handle.
