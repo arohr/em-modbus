@@ -18,7 +18,7 @@ module Modbus
       {
         :request  => PDU::ReadInputStatusRequest,
         :response => PDU::ReadInputStatusResponse,
-        :handler  => :handle_read_bits
+        :handler  => :handle_read_input_status
       },
       {
         :request  => PDU::ReadInputRegistersRequest,
