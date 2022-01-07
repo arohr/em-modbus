@@ -23,12 +23,12 @@ module Modbus
       {
         :request  => PDU::ReadInputRegistersRequest,
         :response => PDU::ReadInputRegistersResponse,
-        :handler  => :handle_read_registers
+        :handler  => :handle_read_input_registers
       },
       {
         :request  => PDU::ReadHoldingRegistersRequest,
         :response => PDU::ReadHoldingRegistersResponse,
-        :handler  => :handle_read_registers
+        :handler  => :handle_read_holding_registers
       },
       {
         :request  => PDU::WriteMultipleRegistersRequest,
