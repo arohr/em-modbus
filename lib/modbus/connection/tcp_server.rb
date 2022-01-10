@@ -9,6 +9,8 @@ module Modbus
     class TCPServer < Base
       extend Forwardable
 
+      def_delegator :@handler, :read_bits,        :read_bits
+      def_delegator :@handler, :write_bit,        :write_bit
       def_delegator :@handler, :read_registers,   :read_registers
       def_delegator :@handler, :write_registers,  :write_registers
 

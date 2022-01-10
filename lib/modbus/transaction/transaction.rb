@@ -18,17 +18,17 @@ module Modbus
       {
         :request  => PDU::ReadInputStatusRequest,
         :response => PDU::ReadInputStatusResponse,
-        :handler  => :handle_read_bits
+        :handler  => :handle_read_input_status
       },
       {
         :request  => PDU::ReadInputRegistersRequest,
         :response => PDU::ReadInputRegistersResponse,
-        :handler  => :handle_read_registers
+        :handler  => :handle_read_input_registers
       },
       {
         :request  => PDU::ReadHoldingRegistersRequest,
         :response => PDU::ReadHoldingRegistersResponse,
-        :handler  => :handle_read_registers
+        :handler  => :handle_read_holding_registers
       },
       {
         :request  => PDU::WriteMultipleRegistersRequest,

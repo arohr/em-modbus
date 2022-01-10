@@ -60,6 +60,24 @@ module Modbus
       end
 
 
+      def handle_read_bits
+        read_bits 1, PDU::ReadCoilsResponse
+      end
+
+
+      def handle_read_input_status
+        read_bits 1, PDU::ReadInputStatusResponse
+      end
+
+
+      def read_bits(offset, response_class)
+        bit_values     = @conn.read_bits offset + @request_adu.pdu.start_addr, @request_adu.pdu.bit_count
+        pdu            = response_class.new
+        pdu.bit_values = bit_values
+        pdu
+      end
+
+
       def handle_read_input_registers
         read_registers 30001, PDU::ReadInputRegistersResponse
       end
@@ -74,6 +92,14 @@ module Modbus
         reg_values     = @conn.read_registers offset + @request_adu.pdu.start_addr, @request_adu.pdu.reg_count
         pdu            = response_class.new
         pdu.reg_values = reg_values
+        pdu
+      end
+
+
+      def handle_write_single_coil
+        _              = @conn.write_bit 1 + @request_adu.pdu.start_addr, @request_adu.pdu.value
+        pdu            = PDU::WriteSingleCoilResponse.new
+        pdu.start_addr = @request_adu.pdu.start_addr
         pdu
       end
 
