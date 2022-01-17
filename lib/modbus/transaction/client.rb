@@ -199,7 +199,7 @@ module Modbus
       # @return [Float] Time time in seconds.
       #
       def transaction_time
-        fail ClientError, 'Response ADU unknown. Can not calcluate transaction time.' unless @response_adu
+        fail ClientError, 'Response ADU unknown. Can not calculate transaction time.' unless @response_adu
         ((@response_adu.pdu.creation_time - @request_adu.pdu.creation_time) * 1000).round
       end
 
