@@ -13,7 +13,7 @@ module Modbus
       {
         :request  => PDU::ReadCoilsRequest,
         :response => PDU::ReadCoilsResponse,
-        :handler  => :handle_read_bits
+        :handler  => :handle_read_coils
       },
       {
         :request  => PDU::ReadInputStatusRequest,
