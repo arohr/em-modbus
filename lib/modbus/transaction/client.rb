@@ -165,17 +165,22 @@ module Modbus
       end
 
 
-      def handle_read_bits
+      def handle_read_coils
         @response_adu.pdu.bit_values
       end
 
 
-      def handle_write_single_coil
-        @response_adu.pdu.value
+      def handle_read_input_status
+        @response_adu.pdu.bit_values
       end
 
 
-      def handle_read_registers
+      def handle_read_input_registers
+        @response_adu.pdu.reg_values
+      end
+
+
+      def handle_read_holding_registers
         @response_adu.pdu.reg_values
       end
 
@@ -183,6 +188,12 @@ module Modbus
       def handle_write_multiple_registers
         @response_adu.pdu.reg_count
       end
+
+
+      def handle_write_single_coil
+        @response_adu.pdu.value
+      end
+
 
 
       # Returns the transaction ident of this transaction which is consistent to the ident of the request PDU.
