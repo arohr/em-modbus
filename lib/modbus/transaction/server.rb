@@ -34,7 +34,7 @@ module Modbus
       # @return [Modbus::TCPADU] The sent ADU.
       #
       def send_pdu(pdu)
-        @response_adu = TCPADU.new pdu, @request_adu.transaction_ident
+        @response_adu = TCPADU.new pdu, @request_adu.transaction_ident, @request_adu.unit_ident
         @conn.send_data @response_adu.encode
         self
       end
