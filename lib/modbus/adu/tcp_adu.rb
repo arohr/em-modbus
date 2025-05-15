@@ -19,7 +19,7 @@ module Modbus
     def initialize(pdu = nil, transaction_ident = nil, unit_ident = nil)
       @transaction_ident = transaction_ident || 0
       @protocol_ident    = 0
-      @unit_ident        = unit_ident || 0xFF
+      @unit_ident        = unit_ident || 0x01
       @pdu               = pdu
     end
 
